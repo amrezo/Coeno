@@ -72,7 +72,8 @@ def home():
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     else:
         image_file = ''
-    return render_template("index.html", posts=posts, image_file=image_file)
+    top_post = posts[0]
+    return render_template("index.html", posts=posts, image_file=image_file, top_post=top_post)
 
 @app.route("/about")
 def about():

@@ -19,6 +19,15 @@
     <!-- DashForge CSS -->
     <link rel="stylesheet" href="../static/assets/css/dashforge.css">
     <link rel="stylesheet" href="../static/assets/css/dashforge.dashboard.css">
+    <style>
+    .jumbotron {
+      color: white;
+      background-image: url("../static/images/heroback.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      }
+    </style>
   </head>
   <body class="page-profile">
 
@@ -44,13 +53,13 @@
           <div class="dropdown-menu dropdown-menu-right tx-13">
             <div class="avatar avatar-lg mg-b-15"><img src="{{ image_file }}" class="rounded-circle" alt=""></div>
             <h6 class="tx-semibold mg-b-25">{{ current_user.username }}</h6>
-            <a href="{{ url_for('account') }}" class="dropdown-item"><i data-feather="edit-3"></i> Edit Profile</a>
+            <a href="{{ url_for('account') }}" class="dropdown-item"><i data-feather="edit-3"></i>Edit Profile</a>
             <a href="{{ url_for('logout') }}" class="dropdown-item"><i data-feather="log-out"></i>Sign Out</a>
           </div><!-- dropdown-menu -->
         </div><!-- dropdown -->
       {% else %}
-        <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-        <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+        <a class="nav-item btn btn-buy" href="{{ url_for('login') }}"><i class="mr-1" data-feather="log-in"></i>Login</a>
+        <a class="nav-item btn btn-buy" href="{{ url_for('register') }}"><i class="mr-1" data-feather="arrow-right"></i>Register</a>
       {% endif %}
       </div><!-- navbar-right -->
       <div class="navbar-search">
@@ -82,6 +91,7 @@
       </div><!-- navbar-search -->
     </header><!-- navbar -->
 
+    {% block hero %}{% endblock %}
 
     <div class="content content-fixed">
       <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
