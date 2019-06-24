@@ -23,6 +23,9 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
+    view_count = db.Column(db.Integer, nullable=True, default=0)
+    like_count = db.Column(db.Integer, nullable=True, default=0)
+    comment_count = db.Column(db.Integer, nullable=True, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
