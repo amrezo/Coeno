@@ -12,13 +12,13 @@
     <title>Coeno | Online Community for Canadians in Tech</title>
 
     <!-- vendor css -->
-    <link href="../static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="../static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-    <link href="../static/lib/jqvmap/jqvmap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/ionicons/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/jqvmap/jqvmap.min.css') }}">
 
     <!-- DashForge CSS -->
-    <link rel="stylesheet" href="../static/assets/css/dashforge.css">
-    <link rel="stylesheet" href="../static/assets/css/dashforge.dashboard.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.dashboard.css') }}">
     <style>
     .jumbotron {
       color: white;
@@ -46,6 +46,7 @@
         <!-- <a id="navbarSearch" href="" class="search-link"><i data-feather="search"></i></a> -->
 
       {% if current_user.is_authenticated %}
+      <a class="nav-item btn btn-buy" href="{{ url_for('new_post') }}"><i class="mr-1" data-feather="plus"></i>New Post</a>
         <div class="dropdown dropdown-profile">
           <a href="" class="dropdown-link" data-toggle="dropdown" data-display="static">
             <div class="avatar avatar-sm"><img src="{{ image_file }}" class="rounded-circle" alt=""></div>
@@ -119,19 +120,18 @@
       </div>
     </footer>
 
-    <script src="../static/lib/jquery/jquery.min.js"></script>
-    <script src="../static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../static/lib/feather-icons/feather.min.js"></script>
-    <script src="../static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="../static/lib/jquery.flot/jquery.flot.js"></script>
-    <script src="../static/lib/jquery.flot/jquery.flot.stack.js"></script>
-    <script src="../static/lib/jquery.flot/jquery.flot.resize.js"></script>
-    <script src="../static/lib/chart.js/Chart.bundle.min.js"></script>
-    <script src="../static/lib/jqvmap/jquery.vmap.min.js"></script>
-    <script src="../static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <script src="{{ url_for('static', filename='lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/jquery.flot/jquery.flot.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/jquery.flot/jquery.flot.stack.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/jquery.flot/jquery.flot.resize.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/chart.js/Chart.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/jqvmap/jquery.vmap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
 
-    <script src="../static/assets/js/dashforge.js"></script>
-    <script src="../static/assets/js/dashforge.sampledata.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/dashforge.js') }}" ></script>
 
   </body>
 </html>

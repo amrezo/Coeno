@@ -1,68 +1,12 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from sqlalchemy import desc
+from flask import render_template, url_for, flash, redirect, request, abort
 from coeno import app, db, bcrypt
-from coeno.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from coeno.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from coeno.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018',
-        'view_count': 230,
-        'like_count': 12,
-        'comment_count': 25
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018',
-        'view_count': 230,
-        'like_count': 12,
-        'comment_count': 25
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018',
-        'view_count': 230,
-        'like_count': 12,
-        'comment_count': 25
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018',
-        'view_count': 230,
-        'like_count': 12,
-        'comment_count': 25
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018',
-        'view_count': 230,
-        'like_count': 12,
-        'comment_count': 25
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018',
-        'view_count': 230,
-        'like_count': 12,
-        'comment_count': 25
-    }
-]
 
 
 @app.route('/')
@@ -72,7 +16,9 @@ def home():
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     else:
         image_file = ''
-    top_post = posts[0]
+    posts = Post.query.all()
+    top_post = Post.query.order_by(desc(Post.view_count)).first()
+
     return render_template("index.html", posts=posts, image_file=image_file, top_post=top_post)
 
 @app.route("/about")
@@ -145,3 +91,66 @@ def account():
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', image_file=image_file, form=form)
+
+
+@app.route("/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    else:
+        image_file = ''
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New Post', form=form, legend='New Post', image_file=image_file)
+
+
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    else:
+        image_file = ''
+    if post.author != current_user:
+        post.view_count += 1
+        db.session.commit()
+
+    return render_template('post.html', title=post.title, post=post, image_file=image_file)
+
+
+@app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',
+                           form=form, legend='Update Post')
+
+
+@app.route("/post/<int:post_id>/delete", methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('home'))
