@@ -16,7 +16,7 @@
         <p class="card-text mt-5">
           <large class="mr-2"><i class="mr-1" data-feather="user" width=20 style="color: white;"></i>{{ top_post.author.username }}</large>
           <large class="mr-2"><i class="mr-1" data-feather="eye" width=20 style="color: white;"></i>{{ top_post.view_count }}</large>
-          <large><i class="mr-1" data-feather="clock" width=20 style="color: white;"></i>{{ top_post.date_posted.strftime('%b %m, %Y') }}</large>
+          <large><i class="mr-1" data-feather="clock" width=20 style="color: white;"></i>{{ top_post.date_posted.strftime('%b %d, %Y') }}</large>
         </p>
       </div>
     </div>
@@ -44,7 +44,7 @@
           <small class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.like_count }}</small>
           <small class="text-muted"><i class="mr-1" data-feather="message-square" width=17></i>{{ post.comment_count }}</small>
         </p>
-        <p class="card-text"><small class="text-muted">Last updated on {{ post.date_posted.strftime('%b %m, %Y') }}</small></p>
+        <p class="card-text"><small class="text-muted">Last updated on {{ post.date_posted.strftime('%b %d, %Y') }}</small></p>
       </div>
     </div>
     {% endfor %}
