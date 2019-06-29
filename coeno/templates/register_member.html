@@ -9,7 +9,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="../static/assets/img/favicon.png">
 
-    <title>Coeno | Online Community for Canadians in Tech | Register</title>
+    <title>Coeno | {{ company_name }} | Register</title>
 
     <!-- vendor css -->
     <link href="../static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -132,7 +132,6 @@
                       {{ form.submit(class="btn btn-brand-02 btn-block") }}
                   </div>
               </form>
-              <div class="tx-13 mg-t-20 tx-center">Already have an account? <a href="{{ url_for('login')}}">Sign In</a></div>
             </div>
           </div><!-- sign-wrapper -->
           <div class="media-body pd-y-30 pd-lg-x-50 pd-xl-x-60 align-items-center d-none d-lg-flex pos-relative">

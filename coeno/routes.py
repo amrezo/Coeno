@@ -8,19 +8,16 @@ from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginFo
 from coeno.models import User, Post, Company
 from flask_login import login_user, current_user, logout_user, login_required
 
-
-@app.route('/')
-@app.route("/home")
-@login_required
-def home():
+@app.route("/<string:company_id>")
+def home(company_id):
     if current_user.is_authenticated:
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+        posts = Post.query.all()
+        # top_post = Post.query.order_by(desc(Post.view_count)).first()
+        return render_template("index.html", posts=posts, image_file=image_file, top_post=top_post)
     else:
-        image_file = ''
-    posts = Post.query.all()
-    top_post = Post.query.order_by(desc(Post.view_count)).first()
-
-    return render_template("index.html", posts=posts, image_file=image_file, top_post=top_post)
+        flash('Please login to your company workspace to continue.', 'info')
+        return redirect(url_for('login', company_id=company_id))
 
 @app.route("/about")
 def about():
@@ -39,7 +36,7 @@ def register_company():
         user = User(username=form.username.data, first_name=form.first_name.data, last_name=form.last_name.data, role="owner", email=form.email.data, company_id=company.id, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your workspace has been created! You are now able to log in', 'success')
+        flash('Your company workspace has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register_company.html', form=form)
 
