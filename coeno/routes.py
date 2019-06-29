@@ -37,7 +37,7 @@ def register_company():
         db.session.add(user)
         db.session.commit()
         flash('Your company workspace has been created! You are now able to log in', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('login', subdomain=company.subdomain))
     return render_template('register_company.html', form=form)
 
 @app.route("/register/member", subdomain="<string:company_id>", methods=['GET', 'POST'])
@@ -52,7 +52,7 @@ def register_member(company_id):
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('login', subdomain=company.subdomain))
     return render_template('register_member.html', form=form, company_name=company_name)
 
 @app.route("/login", subdomain="<string:subdomain>", methods=['GET', 'POST'])
