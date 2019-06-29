@@ -7,17 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="../static/assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
 
     <title>Coeno | Register as a Company</title>
 
     <!-- vendor css -->
-    <link href="../static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="../static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/ionicons/css/ionicons.min.css') }}">
 
     <!-- DashForge CSS -->
-    <link rel="stylesheet" href="../static/assets/css/dashforge.css">
-    <link rel="stylesheet" href="../static/assets/css/dashforge.auth.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.dashboard.css') }}">
   </head>
   <body>
 
@@ -157,12 +157,13 @@
       </div><!-- container -->
     </div><!-- content -->
 
-    <script src="../static/lib/jquery/jquery.min.js"></script>
-    <script src="../static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../static/lib/feather-icons/feather.min.js"></script>
-    <script src="../static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
-    <script src="../static/assets/js/dashforge.js"></script>
+
+    <script src="{{ url_for('static', filename='assets/js/dashforge.js') }}" ></script>
 
   </body>
 </html>

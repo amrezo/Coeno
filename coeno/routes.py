@@ -8,7 +8,7 @@ from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginFo
 from coeno.models import User, Post, Company
 from flask_login import login_user, current_user, logout_user, login_required
 
-@app.route("/<string:company_id>")
+@app.route("/", subdomain="<string:company_id>")
 def home(company_id):
     if current_user.is_authenticated:
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
@@ -40,7 +40,7 @@ def register_company():
         return redirect(url_for('login'))
     return render_template('register_company.html', form=form)
 
-@app.route("/register/<string:company_id>", methods=['GET', 'POST'])
+@app.route("/register/member", subdomain="<string:company_id>", methods=['GET', 'POST'])
 def register_member(company_id):
     form = MemberRegistrationForm()
     company = Company.query.get_or_404(company_id)
@@ -55,7 +55,7 @@ def register_member(company_id):
         return redirect(url_for('login'))
     return render_template('register_member.html', form=form, company_name=company_name)
 
-@app.route("/login/<string:company_id>", methods=['GET', 'POST'])
+@app.route("/login", subdomain="<string:company_id>", methods=['GET', 'POST'])
 def login(company_id):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -91,9 +91,9 @@ def save_picture(form_picture):
 
     return picture_fn
 
-@app.route("/account", methods=['GET', 'POST'])
+@app.route("/account", subdomain="<string:company_id>", methods=['GET', 'POST'])
 @login_required
-def account():
+def account(company_id):
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -103,7 +103,7 @@ def account():
         current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
-        return redirect(url_for('account'))
+        return redirect(url_for('account', company_id=company_id))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
