@@ -42,7 +42,7 @@
                   {% endfor %}
                 {% endif %}
               {% endwith %}
-              <h3 class="tx-color-01 mg-b-5">Sign In</h3>
+              <h3 class="tx-color-01 mg-b-5">Sign In - {{ company_name }}</h3>
               <p class="tx-color-03 tx-16 mg-b-40">Welcome back to Coeno! Please sign in to continue.</p>
 
 
@@ -85,7 +85,6 @@
                   <div class="form-group">
                       {{ form.submit(class="btn btn-brand-02 btn-block") }}
                   </div>
-                  <div class="tx-13 mg-t-20 tx-center">Don't have an account? <a href="{{ url_for('register') }}">Create an Account</a></div>
               </form>
             </div>
           </div><!-- sign-wrapper -->

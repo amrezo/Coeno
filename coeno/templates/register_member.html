@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../static/assets/img/favicon.png">
+
+    <title>Coeno | Online Community for Canadians in Tech | Register</title>
+
+    <!-- vendor css -->
+    <link href="../static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="../static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- DashForge CSS -->
+    <link rel="stylesheet" href="../static/assets/css/dashforge.css">
+    <link rel="stylesheet" href="../static/assets/css/dashforge.auth.css">
+  </head>
+  <body>
+
+    <div class="content content-fixed content-auth">
+      <div class="container">
+        <div class="media align-items-stretch justify-content-center ht-100p">
+          <div class="sign-wrapper mg-lg-r-50 mg-xl-r-60">
+            <div class="pd-t-20 wd-100p">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-dismissible alert-{{ category }}">
+                      <button type="button" class="close" data-dismiss="alert">x</button>
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+              <h4 class="tx-color-01 mg-b-5">Your company, {{ company_name }}, has invited you to sign up to Coeno!</h4>
+              <p class="tx-color-03 tx-16 mg-b-40">Sign up to a better way of collaborative decision-making.</p>
+
+
+                  <form method="POST" action="">
+                  {{ form.hidden_tag() }}
+                  <fieldset class="form-group">
+                      <div class="form-group">
+                          {{ form.first_name.label(class="form-control-label") }}
+
+                          {% if form.first_name.errors %}
+                              {{ form.first_name(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.first_name.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.first_name(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                      <div class="form-group">
+                          {{ form.last_name.label(class="form-control-label") }}
+
+                          {% if form.last_name.errors %}
+                              {{ form.last_name(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.last_name.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.last_name(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                      <div class="form-group">
+                          {{ form.username.label(class="form-control-label") }}
+
+                          {% if form.username.errors %}
+                              {{ form.username(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.username.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.username(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                      <div class="form-group">
+                          {{ form.email.label(class="form-control-label") }}
+                          {% if form.email.errors %}
+                              {{ form.email(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.email.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.email(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                      <div class="form-group">
+                          {{ form.password.label(class="form-control-label") }}
+                          {% if form.password.errors %}
+                              {{ form.password(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.password.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.password(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                      <div class="form-group">
+                          {{ form.confirm_password.label(class="form-control-label") }}
+                          {% if form.confirm_password.errors %}
+                              {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.confirm_password.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.confirm_password(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                  </fieldset>
+                  <div class="form-group tx-12">
+                    By clicking <strong>Create an Account</strong> below, you agree to our terms of service and privacy policy.
+                  </div>
+                  <div class="form-group">
+                      {{ form.submit(class="btn btn-brand-02 btn-block") }}
+                  </div>
+              </form>
+              <div class="tx-13 mg-t-20 tx-center">Already have an account? <a href="{{ url_for('login')}}">Sign In</a></div>
+            </div>
+          </div><!-- sign-wrapper -->
+          <div class="media-body pd-y-30 pd-lg-x-50 pd-xl-x-60 align-items-center d-none d-lg-flex pos-relative">
+            <div class="mx-lg-wd-500 mx-xl-wd-550">
+              <img src="../static/images/register.svg" class="img-fluid" alt="">
+            </div>
+          </div><!-- media-body -->
+        </div><!-- media -->
+      </div><!-- container -->
+    </div><!-- content -->
+
+    <script src="../static/lib/jquery/jquery.min.js"></script>
+    <script src="../static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/lib/feather-icons/feather.min.js"></script>
+    <script src="../static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <script src="../static/assets/js/dashforge.js"></script>
+
+  </body>
+</html>
