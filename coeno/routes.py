@@ -8,8 +8,8 @@ from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginFo
 from coeno.models import User, Post, Company
 from flask_login import login_user, current_user, logout_user, login_required
 
-@app.route("/", subdomain="<string:company_id>")
-def home(company_id):
+@app.route("/", subdomain="<string:subdomain>")
+def home(subdomain):
     if current_user.is_authenticated:
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
         posts = Post.query.all()
@@ -30,7 +30,7 @@ def register_company():
     form = CompanyRegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        company = Company(name=form.company_name.data)
+        company = Company(name=form.company_name.data, subdomain=form.subdomain.data)
         db.session.add(company)
         db.session.commit()
         user = User(username=form.username.data, first_name=form.first_name.data, last_name=form.last_name.data, role="owner", email=form.email.data, company_id=company.id, password=hashed_password)
@@ -55,12 +55,12 @@ def register_member(company_id):
         return redirect(url_for('login'))
     return render_template('register_member.html', form=form, company_name=company_name)
 
-@app.route("/login", subdomain="<string:company_id>", methods=['GET', 'POST'])
-def login(company_id):
+@app.route("/login", subdomain="<string:subdomain>", methods=['GET', 'POST'])
+def login(subdomain):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
-    company = Company.query.get_or_404(company_id)
+    company = Company.query.get_or_404(subdomain=subdomain)
     company_name = company.name
 
     if form.validate_on_submit():
@@ -91,9 +91,9 @@ def save_picture(form_picture):
 
     return picture_fn
 
-@app.route("/account", subdomain="<string:company_id>", methods=['GET', 'POST'])
+@app.route("/account", subdomain="<string:subdomain>", methods=['GET', 'POST'])
 @login_required
-def account(company_id):
+def account(subdomain):
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -103,7 +103,7 @@ def account(company_id):
         current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
-        return redirect(url_for('account', company_id=company_id))
+        return redirect(url_for('account', subdomain=subdomain))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email

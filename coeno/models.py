@@ -9,6 +9,7 @@ def load_user(user_id):
 
 class Company(db.Model):
     id = db.Column(db.String(16), primary_key=True, default=secrets.token_hex(16))
+    subdomain = db.Column(db.String(120), nullable=False)
     name = db.Column(db.String(120), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default_company.jpg')
     users = db.relationship('User', backref='company', lazy=True)
