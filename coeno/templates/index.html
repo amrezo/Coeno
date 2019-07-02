@@ -49,9 +49,21 @@
 <div class="card-columns">
     {% for post in posts %}
     <div class="card shadow-sm">
-      <div class="card-body">
+      {% if post.type == "suggestion" %}
+        <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #007bff;"></span>
+        <div class="card-body">
+          <span style="color: #007bff;"><i class="mr-2" data-feather="clipboard" width=15 style="color: #007bff;"></i><strong>Suggestion</strong></span>
+      {% elif post.type == "response" %}
+        <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #ff9d00;"></span>
+        <div class="card-body">
+          <span style="color: #ff9d00;"><i class="mr-2" data-feather="corner-up-right" width=15 style="color: #ff9d00;"></i><strong>Response</strong></span>
+      {% elif post.type == "notion" %}
+        <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #9500ff;"></span>
+        <div class="card-body">
+          <span style="color: #9500ff;"><i class="mr-2" data-feather="message-circle" width=15 style="color: #9500ff;"></i><strong>Notion</strong></span>
+          {% endif %}
         <a href="{{ url_for('post', company_id=company_id, post_id=post.id) }}" class="card-link">
-          <h5 class="card-title">{{ post.title }}</h5>
+          <h5 class="card-title mt-3">{{ post.title }}</h5>
           <p class="card-text" style="color: black;">{{ post.content | truncate(100) | safe }}</p>
         </a>
         <p class="card-text">
