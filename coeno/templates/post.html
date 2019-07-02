@@ -1,28 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="card col-lg-12" style="border-radius: 0; margin: -1px;">
-  <div class="card-body">
-    <h5 class="card-title">{{ post.title }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">by {{ post.author.first_name+" "+post.author.last_name }}</h6>
-    <p class="card-text" style="color: black;">{{ post.content|safe }}</p>
-    <p class="card-text mt-3">
-      <small class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</small>
-      <small class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.like_count }}</small>
-      <small class="text-muted"><i class="mr-1" data-feather="message-square" width=17></i>{{ post.comment_count }}</small>
+
+<div class="row">
+  <div class="col-2">
+    <img class="rounded-circle mb-3" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" width="50">
+    <h6><span class="text-muted">by</span> {{ post.author.first_name+" "+post.author.last_name }}</h6>
+    {% if post.author.title %}
+    <p class="text-muted">{{ post.author.title }}</p>
+    {% endif %}
+    <p>
+      <large class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</large>
+      <large class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.like_count }}</large>
+      <large class="text-muted"><i class="mr-1" data-feather="message-square" width=17></i>{{ post.comment_count }}</large>
     </p>
-    <p class="card-text"><small class="text-muted">Last updated on {{ post.date_posted.strftime('%b %d, %Y') }}</small></p>
+  </div>
+  <div class="col-10">
+    {% if post.type == "suggestion" %}
+        <span style="color: #007bff;"><i class="mr-2" data-feather="clipboard" width=20 style="color: #007bff;"></i><strong>Suggestion</strong></span>
+    {% elif post.type == "response" %}
+        <span style="color: #ff9d00;"><i class="mr-2" data-feather="corner-up-right" width=20 style="color: #ff9d00;"></i><strong>Response</strong></span>
+    {% elif post.type == "notion" %}
+        <span style="color: #9500ff;"><i class="mr-2" data-feather="message-circle" width=20 style="color: #9500ff;"></i><strong>Notion</strong></span>
+    {% endif %}
+    <h1 class="mt-2">{{ post.title }}</h1>
+    <p><small class="text-muted">Last updated on {{ post.date_posted.strftime('%b %d, %Y') }}</small></p>
+    <p>{{ post.content | safe }}</p>
     {% if post.author == current_user %}
       <div>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id, company_id=company_id) }}">Update</a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id, company_id=company_id) }}">Edit Post</a>
         <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
       </div>
     {% endif %}
   </div>
 </div>
 
+
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
