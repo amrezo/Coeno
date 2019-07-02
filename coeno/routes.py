@@ -8,6 +8,14 @@ from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginFo
 from coeno.models import User, Post, Company
 from flask_login import login_user, current_user, logout_user, login_required
 
+@app.route("/")
+def landing():
+    if current_user.is_authenticated:
+        company_id = current_user.company_id
+        return redirect(url_for('home', company_id=company_id))
+    else:
+        return render_template("landing.html")
+
 @app.route("/<string:company_id>")
 def home(company_id):
     if current_user.is_authenticated:
