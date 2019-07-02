@@ -3,27 +3,42 @@
 <!-- Hero Content -->
 {% block hero %}
 
-{% if top_post is defined %}
-<div class="jumbotron jumbotron-fluid" style="padding-top:100px;">
-  <div class="container">
-    <div class="card" style="background-color: transparent; border: 0;">
-      <div class="card-body">
-        <span><i class="mr-2" data-feather="trending-up" width=20 style="color: #00A3FF;"></i>TOP POST</span>
-        <a href="{{ url_for('post', company_id=company_id, post_id=top_post.id) }}" class="card-link">
-          <h1 class="card-title mt-3" style="color: white;">{{ top_post.title }}</h1>
-          <p class="card-text" style="color: white;">{{ top_post.content | truncate(100) | safe }}</p>
-        </a>
-        <p class="card-text mt-5">
-          <large class="mr-2"><i class="mr-1" data-feather="user" width=20 style="color: white;"></i>{{ top_post.author.username }}</large>
-          <large class="mr-2"><i class="mr-1" data-feather="eye" width=20 style="color: white;"></i>{{ top_post.view_count }}</large>
-          <large><i class="mr-1" data-feather="clock" width=20 style="color: white;"></i>{{ top_post.date_posted.strftime('%b %d, %Y') }}</large>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
 
-{% endif %}
+<div class="jumbotron jumbotron-fluid" style="padding-top:100px;">
+    <div class="container">
+      <p><span><i class="mr-2" data-feather="trending-up" width=20 style="color: #00A3FF;"></i>Trending</span></p>
+      <div class="card-group">
+        {% for top_post in top_posts %}
+          <div class="card col-lg-3 shadow-sm mr-3" style="padding:0px">
+          {% if top_post.type == "suggestion" %}
+            <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #007bff;"></span>
+            <div class="card-body">
+              <span style="color: #007bff;"><i class="mr-2" data-feather="clipboard" width=15 style="color: #007bff;"></i><strong>Suggestion</strong></span>
+          {% elif top_post.type == "response" %}
+            <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #ff9d00;"></span>
+            <div class="card-body">
+              <span style="color: #ff9d00;"><i class="mr-2" data-feather="clipboard" width=15 style="color: #ff9d00;"></i><strong>Response</strong></span>
+          {% elif top_post.type == "notion" %}
+            <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #9500ff;"></span>
+            <div class="card-body">
+              <span style="color: #9500ff;"><i class="mr-2" data-feather="clipboard" width=15 style="color: #9500ff;"></i><strong>Notion</strong></span>
+          {% endif %}
+              <a href="{{ url_for('post', company_id=company_id, post_id=top_post.id) }}" class="card-link">
+                <h4 class="card-title mt-3">{{ top_post.title }}</h4>
+                <p class="card-text">{{ top_post.content | truncate(100) | safe }}</p>
+              </a>
+              <p class="card-text">
+                <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + top_post.author.image_file) }}" width="25">
+                  {{ top_post.author.first_name+" "+top_post.author.last_name }}
+                <small class="text-muted">· {{ top_post.date_posted.strftime('%b, %d') }}</small>
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+        </div>
+      </div>
+
 
 {% endblock hero %}
 
@@ -36,7 +51,7 @@
       <div class="card-body">
         <a href="{{ url_for('post', company_id=company_id, post_id=post.id) }}" class="card-link">
           <h5 class="card-title">{{ post.title }}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
+          <h6 class="card-subtitle mb-2 text-muted">{{ post.author.first_name+" "+post.author.last_name }}</h6>
           <p class="card-text" style="color: black;">{{ post.content | truncate(100) | safe }}</p>
         </a>
         <p class="card-text mt-3">

@@ -3,7 +3,7 @@
 <div class="card col-lg-12" style="border-radius: 0; margin: -1px;">
   <div class="card-body">
     <h5 class="card-title">{{ post.title }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">by {{ post.author.first_name+" "+post.author.last_name }}</h6>
     <p class="card-text" style="color: black;">{{ post.content|safe }}</p>
     <p class="card-text mt-3">
       <small class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</small>

@@ -21,8 +21,8 @@ def home(company_id):
     if current_user.is_authenticated:
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
         posts = Post.query.filter_by(company_id=company_id).all()
-        top_post = Post.query.filter_by(company_id=company_id).order_by(desc(Post.view_count)).first()
-        return render_template("index.html", posts=posts, image_file=image_file, top_post=top_post, company_id=company_id)
+        top_posts = Post.query.filter_by(company_id=company_id).order_by(desc(Post.view_count)).limit(4).all()
+        return render_template("index.html", posts=posts, image_file=image_file, top_posts=top_posts, company_id=company_id)
     else:
         flash('Please login to your company workspace to continue.', 'info')
         return redirect(url_for('login', company_id=company_id))
@@ -156,6 +156,7 @@ def update_post(post_id, company_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.type = form.type.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id, company_id=company_id))
