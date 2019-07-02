@@ -45,9 +45,6 @@
                 {% else %}
                     {{ form.content(class="form-control form-control-lg", id="hidden_field") }}
                     <div id="quillInline">
-                      {% if form_content %}
-                        {{ form_content | safe}}
-                      {% endif %}
                     </div>
                 {% endif %}
             </div>
@@ -59,7 +56,6 @@
 </div>
 
 <script src="{{ url_for('static', filename='lib/quill/quill.min.js') }}"></script>
-<script src="{{ url_for('static', filename='lib/quill/quillgethtml.js') }}"></script>
 <script type="text/javascript">
   var quill = new Quill('#quillInline', {
     modules: {
@@ -71,6 +67,17 @@
     theme: 'snow'  // or 'bubble'
   });
 
+  quill.getHTML = () => {
+    return quill.root.innerHTML;
+  };
+
+  quill.setHTML = (html) => {
+    quill.root.innerHTML = html;
+  };
+
+  {% if form_content %}
+    quill.setHTML('{{ form_content | safe }}');
+  {% endif %}
 
   var submit = function () {
 
