@@ -34,19 +34,18 @@
     <header class="navbar navbar-header navbar-header-fixed">
       <a href="" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
       <div class="navbar-brand">
-        <a href="{{ url_for('home') }}" class="df-logo">coeno</a>
+        <a href="{{ url_for('home', company_id=company_id) }}" class="df-logo">coeno</a>
       </div><!-- navbar-brand -->
       <div id="navbarMenu" class="navbar-menu-wrapper">
         <div class="navbar-menu-header">
-          <a href="{{ url_for('home') }}" class="df-logo">coeno</a>
+          <a href="{{ url_for('home', company_id=company_id) }}" class="df-logo">coeno</a>
           <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
         </div><!-- navbar-menu-header -->
       </div><!-- navbar-menu-wrapper -->
       <div class="navbar-right">
         <!-- <a id="navbarSearch" href="" class="search-link"><i data-feather="search"></i></a> -->
 
-      {% if current_user.is_authenticated %}
-      <a class="nav-item btn btn-buy" href="{{ url_for('new_post') }}"><i class="mr-1" data-feather="plus"></i>New Post</a>
+      <a class="nav-item btn btn-buy" href="{{ url_for('new_post', company_id=company_id) }}"><i class="mr-1" data-feather="plus"></i>New Post</a>
         <div class="dropdown dropdown-profile">
           <a href="" class="dropdown-link" data-toggle="dropdown" data-display="static">
             <div class="avatar avatar-sm"><img src="{{ image_file }}" class="rounded-circle" alt=""></div>
@@ -54,14 +53,11 @@
           <div class="dropdown-menu dropdown-menu-right tx-13">
             <div class="avatar avatar-lg mg-b-15"><img src="{{ image_file }}" class="rounded-circle" alt=""></div>
             <h6 class="tx-semibold mg-b-25">{{ current_user.username }}</h6>
-            <a href="{{ url_for('account') }}" class="dropdown-item"><i data-feather="edit-3"></i>Edit Profile</a>
-            <a href="{{ url_for('logout') }}" class="dropdown-item"><i data-feather="log-out"></i>Sign Out</a>
+            <a href="{{ url_for('account', company_id=company_id) }}" class="dropdown-item"><i data-feather="edit-3"></i>Edit Profile</a>
+            <a href="{{ url_for('logout', company_id=company_id) }}" class="dropdown-item"><i data-feather="log-out"></i>Sign Out</a>
           </div><!-- dropdown-menu -->
         </div><!-- dropdown -->
-      {% else %}
-        <a class="nav-item btn btn-buy" href="{{ url_for('login') }}"><i class="mr-1" data-feather="log-in"></i>Login</a>
-        <a class="nav-item btn btn-buy" href="{{ url_for('register') }}"><i class="mr-1" data-feather="arrow-right"></i>Register</a>
-      {% endif %}
+
       </div><!-- navbar-right -->
       <div class="navbar-search">
         <div class="navbar-search-header">

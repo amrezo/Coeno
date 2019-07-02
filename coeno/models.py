@@ -8,15 +8,15 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class Company(db.Model):
-    id = db.Column(db.String(16), primary_key=True, default=secrets.token_hex(16))
-    subdomain = db.Column(db.String(120), nullable=False)
+    id = db.Column(db.String(2), primary_key=True, default=secrets.token_hex(2))
     name = db.Column(db.String(120), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default_company.jpg')
     users = db.relationship('User', backref='company', lazy=True)
+    posts = db.relationship('Post', backref='company', lazy=True)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    role = db.Column(db.String(120), unique=True, nullable=False) #owner, admin, or member
+    role = db.Column(db.String(120), nullable=False) #owner, admin, or member
     username = db.Column(db.String(20), unique=True, nullable=False)
     first_name = db.Column(db.String(120), nullable=False)
     last_name = db.Column(db.String(120), nullable=False)
@@ -37,3 +37,4 @@ class Post(db.Model):
     comment_count = db.Column(db.Integer, nullable=True, default=0)
     type = db.Column(db.String(100), nullable=False) #suggestion, response or notion
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)

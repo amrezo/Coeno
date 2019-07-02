@@ -58,20 +58,6 @@
                           {% endif %}
                       </div>
                       <div class="form-group">
-                          {{ form.subdomain.label(class="form-control-label") }}
-
-                          {% if form.subdomain.errors %}
-                              {{ form.subdomain(class="form-control form-control-lg is-invalid") }}
-                              <div class="invalid-feedback">
-                                  {% for error in form.subdomain.errors %}
-                                      <span>{{ error }}</span>
-                                  {% endfor %}
-                              </div>
-                          {% else %}
-                              {{ form.subdomain(class="form-control form-control-lg") }}
-                          {% endif %}
-                      </div>
-                      <div class="form-group">
                           {{ form.first_name.label(class="form-control-label") }}
 
                           {% if form.first_name.errors %}
@@ -164,7 +150,7 @@
           </div><!-- sign-wrapper -->
           <div class="media-body pd-y-30 pd-lg-x-50 pd-xl-x-60 align-items-center d-none d-lg-flex pos-relative">
             <div class="mx-lg-wd-500 mx-xl-wd-550">
-              <img src="../static/images/register.svg" class="img-fluid" alt="">
+              <img src="{{ url_for('static', filename='images/register.svg') }}" class="img-fluid" alt="">
             </div>
           </div><!-- media-body -->
         </div><!-- media -->
