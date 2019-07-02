@@ -34,14 +34,21 @@
             <div class="form-group">
                 {{ form.content.label(class="form-control-label") }}
                 {% if form.content.errors %}
-                    {{ form.content(class="form-control form-control-lg is-invalid") }}
+                    {{ form.content(class="form-control form-control-lg is-invalid", id="hidden_field") }}
+                    <div id="quillInline" class="is-invalid">
+                    </div>
                     <div class="invalid-feedback">
                         {% for error in form.content.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.content(class="form-control form-control-lg") }}
+                    {{ form.content(class="form-control form-control-lg", id="hidden_field") }}
+                    <div id="quillInline">
+                      {% if form_content %}
+                        {{ form_content | safe}}
+                      {% endif %}
+                    </div>
                 {% endif %}
             </div>
         </fieldset>
@@ -50,4 +57,32 @@
         </div>
     </form>
 </div>
+
+<script src="{{ url_for('static', filename='lib/quill/quill.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/quill/quillgethtml.js') }}"></script>
+<script type="text/javascript">
+  var quill = new Quill('#quillInline', {
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+      ]
+    },
+    placeholder: 'Write something here...',
+    theme: 'snow'  // or 'bubble'
+  });
+
+
+  var submit = function () {
+
+    // Get the contents of the text editor
+    var hidden_text_field = document.getElementById('content');
+    hidden_text_field.value = quill.getHTML();
+
+  }
+
+  // Attach the onclick function to the submit button Flask-WTF creates
+  var form = document.getElementsByTagName('form')[0];
+  form.onsubmit = submit;
+
+</script>
 {% endblock content %}

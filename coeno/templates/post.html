@@ -4,7 +4,7 @@
   <div class="card-body">
     <h5 class="card-title">{{ post.title }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
-    <p class="card-text" style="color: black;">{{ post.content }}</p>
+    <p class="card-text" style="color: black;">{{ post.content|safe }}</p>
     <p class="card-text mt-3">
       <small class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</small>
       <small class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.like_count }}</small>

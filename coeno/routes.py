@@ -154,8 +154,9 @@ def update_post(post_id, company_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+        form_content = post.content
     return render_template('create_post.html', title='Update Post',
-                           form=form, legend='Update Post', company_id=company_id)
+                           form=form, legend='Update Post', company_id=company_id, form_content=form_content)
 
 
 @app.route("/<string:company_id>/post/<int:post_id>/delete", methods=['POST'])

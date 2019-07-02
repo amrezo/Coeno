@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, HiddenField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from coeno.models import User
 
@@ -79,5 +79,5 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     type = SelectField('Type', choices=[('suggestion', 'Suggestion'), ('response', 'Response'), ('notion', 'Notion')], validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
+    content = HiddenField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')

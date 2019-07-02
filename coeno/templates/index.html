@@ -11,7 +11,7 @@
         <span><i class="mr-2" data-feather="trending-up" width=20 style="color: #00A3FF;"></i>TOP POST</span>
         <a href="{{ url_for('post', company_id=company_id, post_id=top_post.id) }}" class="card-link">
           <h1 class="card-title mt-3" style="color: white;">{{ top_post.title }}</h1>
-          <p class="card-text" style="color: white;">{{ top_post.content | truncate(250) }}</p>
+          <p class="card-text" style="color: white;">{{ top_post.content | truncate(100) | safe }}</p>
         </a>
         <p class="card-text mt-5">
           <large class="mr-2"><i class="mr-1" data-feather="user" width=20 style="color: white;"></i>{{ top_post.author.username }}</large>
@@ -37,7 +37,7 @@
         <a href="{{ url_for('post', company_id=company_id, post_id=post.id) }}" class="card-link">
           <h5 class="card-title">{{ post.title }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
-          <p class="card-text" style="color: black;">{{ post.content | truncate(150) }}</p>
+          <p class="card-text" style="color: black;">{{ post.content | truncate(100) | safe }}</p>
         </a>
         <p class="card-text mt-3">
           <small class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</small>

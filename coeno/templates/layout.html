@@ -16,9 +16,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/ionicons/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/jqvmap/jqvmap.min.css') }}">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/quill/quill.core.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/quill/quill.snow.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/quill/quill.bubble.css') }}">
+
     <!-- DashForge CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.dashboard.css') }}">
+
     <style>
     .jumbotron {
       color: white;
@@ -26,6 +31,12 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+      }
+      .jumbotron p {
+        color: white;
+      }
+      .content p {
+        color: black;
       }
     </style>
   </head>
