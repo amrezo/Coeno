@@ -24,23 +24,22 @@
     {% if post.author.title %}
     <p class="text-muted">{{ post.author.title }}</p>
     {% endif %}
-    <p>
-      <large class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</large>
-      <large class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.like_count }}</large>
-      <large class="text-muted"><i class="mr-1" data-feather="message-square" width=17></i>{{ post.comment_count }}</large>
-    </p>
   </div>
   <div class="col-lg-10">
-    <p>{{ post.content | safe }}</p>
     {% if post.author == current_user %}
       <div>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id, company_id=company_id) }}">Edit Post</a>
-        <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        <a class="btn btn-info btn-sm mt-1 mb-1 rounded-pill" href="{{ url_for('update_post', post_id=post.id, company_id=company_id) }}">Edit Post</a>
+        <button type="button" class="btn btn-danger btn-sm m-1 rounded-pill" data-toggle="modal" data-target="#deleteModal">Delete</button>
       </div>
     {% endif %}
+    <p>{{ post.content | safe }}</p>
+    <div class="mt-4">
+      <button type="button" class="btn btn-primary rounded-pill mr-2"><i class="mr-2" data-feather="eye" width=17></i>{{ post.view_count }} Views</button>
+      <button type="button" class="btn btn-success rounded-pill mr-2"><i class="mr-2" data-feather="thumbs-up" width=17></i>{{ post.like_count }} Likes</button>
+      <button type="button" class="btn btn-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.comment_count }} Comments</button>
+    </div>
   </div>
 </div>
-
 
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -53,12 +52,20 @@
           </button>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
           <form action="{{ url_for('delete_post', post_id=post.id, company_id=company_id) }}" method="POST">
-            <input class="btn btn-danger" type="submit" value="Delete">
+            <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
           </form>
         </div>
       </div>
     </div>
   </div>
 {% endblock content %}
+
+{% block debate %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+      <h3 class="d-flex justify-content-center">There are {{ post.comment_count }} comments to show.</h3>
+  </div>
+</div>
+{% endblock debate %}
