@@ -34,9 +34,25 @@
     {% endif %}
     <p>{{ post.content | safe }}</p>
     <div class="mt-4">
-      <button type="button" class="btn btn-primary rounded-pill mr-2"><i class="mr-2" data-feather="eye" width=17></i>{{ post.view_count }} Views</button>
-      <button type="button" class="btn btn-success rounded-pill mr-2"><i class="mr-2" data-feather="thumbs-up" width=17></i>{{ post.like_count }} Likes</button>
-      <button type="button" class="btn btn-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.comment_count }} Comments</button>
+      <a class="btn btn-outline-primary rounded-pill mr-2"><i class="mr-2" data-feather="eye" width=17></i>{{ post.view_count }} Views</a>
+      {% if current_user.has_liked_post(post) %}
+        <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="btn btn-success rounded-pill mr-2"><i class="mr-2" data-feather="thumbs-up" width=17></i>{{ post.likes.count() }}
+          {% if post.likes.count() == 1 %}
+          Like
+          {% else %}
+          Likes
+          {% endif %}
+        </a>
+      {% else %}
+      <a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="btn btn-outline-success rounded-pill mr-2"><i class="mr-2" data-feather="thumbs-up" width=17></i>{{ post.likes.count() }}
+        {% if post.likes.count() == 1 %}
+        Like
+        {% else %}
+        Likes
+        {% endif %}
+      </a>
+      {% endif %}
+      <a class="btn btn-outline-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.comment_count }} Comments</a>
     </div>
   </div>
 </div>

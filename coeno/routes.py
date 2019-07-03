@@ -62,7 +62,7 @@ def register_member(company_id):
 @app.route("/login/<string:company_id>", methods=['GET', 'POST'])
 def login(company_id):
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('home', company_id=company_id))
     form = LoginForm()
     company = Company.query.get_or_404(company_id)
     company_name = company.name
@@ -146,6 +146,17 @@ def post(post_id, company_id):
         db.session.commit()
 
     return render_template('post.html', title=post.title, post=post, image_file=image_file, company_id=company_id)
+
+@app.route('/like/<int:post_id>/<action>')
+def like_action(post_id, action):
+    post = Post.query.get_or_404(post_id)
+    if action == 'like':
+        current_user.like_post(post)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)
 
 
 @app.route("/<string:company_id>/post/<int:post_id>/update", methods=['GET', 'POST'])
