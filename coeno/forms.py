@@ -78,7 +78,12 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is taken. Please choose a different one.')
 
 class PostForm(FlaskForm):
-    type = SelectField('Type', choices=[('suggestion', 'Suggestion'), ('response', 'Response'), ('notion', 'Notion')], validators=[DataRequired()])
+    type = SelectField('Type', choices=[('suggestion', 'Suggestion'), ('notion', 'Notion')], validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     content = HiddenField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+
+class ResponseForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = HiddenField('Content', validators=[DataRequired()])
+    submit = SubmitField('Submit Response')

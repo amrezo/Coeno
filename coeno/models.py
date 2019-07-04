@@ -55,8 +55,9 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     view_count = db.Column(db.Integer, nullable=True, default=0)
-    comment_count = db.Column(db.Integer, nullable=True, default=0)
     type = db.Column(db.String(100), nullable=False) #suggestion, response or notion
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
+    response_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    responses = db.relationship(lambda: Post, remote_side=id, backref='post', uselist=True)

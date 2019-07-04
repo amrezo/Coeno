@@ -4,7 +4,7 @@ from PIL import Image
 from sqlalchemy import desc
 from flask import render_template, url_for, flash, redirect, request, abort
 from coeno import app, db, bcrypt
-from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginForm, UpdateAccountForm, PostForm, ResponseForm
 from coeno.models import User, Post, Company
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -132,6 +132,24 @@ def new_post(company_id):
         flash('Your post has been created!', 'success')
         return redirect(url_for('home', company_id=company_id))
     return render_template('create_post.html', title='New Post', form=form, legend='New Post', image_file=image_file, company_id=company_id)
+
+@app.route("/<string:company_id>/response/<int:post_id>", methods=['GET', 'POST'])
+@login_required
+def response(company_id, post_id):
+    original_post = Post.query.get_or_404(post_id)
+    form = ResponseForm()
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    else:
+        image_file = ''
+    if form.validate_on_submit():
+        response = Post(title=form.title.data, content=form.content.data, author=current_user, type='response', company_id=company_id)
+        original_post.responses.append(response)
+        db.session.add(response)
+        db.session.commit()
+        flash('Your response has been created!', 'success')
+        return redirect(url_for('post', company_id=company_id, post_id=response.id))
+    return render_template('create_post.html', title='New Response', form=form, legend='New Response', image_file=image_file, company_id=company_id)
 
 
 @app.route("/<string:company_id>/post/<int:post_id>")

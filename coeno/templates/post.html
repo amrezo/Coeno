@@ -52,7 +52,7 @@
         {% endif %}
       </a>
       {% endif %}
-      <a href="#" class="btn btn-outline-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.comment_count }} Comments</a>
+        <a href="#" class="btn btn-outline-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.responses|length }} Responses</a>
     </div>
   </div>
 </div>
@@ -81,7 +81,32 @@
 {% block debate %}
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
-      <h3 class="d-flex justify-content-center">There are {{ post.comment_count }} comments to show.</h3>
+      <h3>Responses</h3>
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title d-flex justify-content-center">Add a reponse</h6>
+          <p class="card-text d-flex justify-content-center">Raise a discussion about this post.</p>
+          <div class="text-center">
+            <a href="{{ url_for('response', company_id=company_id, post_id=post.id) }}" class="btn btn-secondary rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>Add a Response</a>
+          </div>
+        </div>
+      </div>
+      {% for response in post.responses %}
+      <div class="card mt-3 shadow-sm">
+        <div class="card-body">
+          <span style="color: #ff9d00;"><i class="mr-2" data-feather="corner-up-right" width=20 style="color: #ff9d00;"></i><strong>Response</strong></span>
+          <div class="row">
+            <div class="col-10">
+              <h4 class="card-title">{{ response.title }}</h4>
+            </div>
+            <div class="col-2">
+              <a href="{{ url_for('post', company_id=company_id, post_id=response.id) }}" class="btn btn-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
   </div>
 </div>
 {% endblock debate %}

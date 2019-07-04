@@ -71,8 +71,8 @@
         </p>
         <p class="card-text mt-3 d-flex justify-content-end">
           <small class="text-muted mr-2"><i class="mr-1" data-feather="eye" width=17></i>{{ post.view_count }}</small>
-          <small class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.like_count }}</small>
-          <small class="text-muted"><i class="mr-1" data-feather="message-square" width=17></i>{{ post.comment_count }}</small>
+          <small class="text-muted mr-2"><i class="mr-1" data-feather="thumbs-up" width=17></i>{{ post.likes.count() }}</small>
+          <small class="text-muted"><i class="mr-1" data-feather="message-square" width=17></i>{{ post.responses|length }}</small>
         </p>
       </div>
     </div>
