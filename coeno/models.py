@@ -59,5 +59,5 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
-    response_id = db.Column(db.Integer, db.ForeignKey('post.id'))
-    responses = db.relationship(lambda: Post, remote_side=id, backref='post', uselist=True)
+    responses = db.relationship('Post', lazy=True)
+Post.original_post_id = db.Column(db.Integer, db.ForeignKey(Post.id))
