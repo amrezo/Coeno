@@ -149,7 +149,7 @@ def response(company_id, post_id):
         db.session.commit()
         flash('Your response has been created!', 'success')
         return redirect(url_for('post', company_id=company_id, post_id=response.id))
-    return render_template('create_post.html', title='New Response', form=form, legend='New Response', image_file=image_file, company_id=company_id)
+    return render_template('create_response.html', title='New Response', form=form, legend='New Response', image_file=image_file, company_id=company_id)
 
 
 @app.route("/<string:company_id>/post/<int:post_id>")

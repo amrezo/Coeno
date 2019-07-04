@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {% if form.content.errors %}
+                    {{ form.content(class="form-control form-control-lg is-invalid", id="hidden_field") }}
+                    <div id="quillInline" class="is-invalid">
+                    </div>
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content(class="form-control form-control-lg", id="hidden_field") }}
+                    <div id="quillInline">
+                    </div>
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-brand-01 btn-block") }}
+        </div>
+    </form>
+</div>
+
+<script src="{{ url_for('static', filename='lib/quill/quill.min.js') }}"></script>
+<script type="text/javascript">
+  var quill = new Quill('#quillInline', {
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+      ]
+    },
+    placeholder: 'Write something here...',
+    theme: 'snow'  // or 'bubble'
+  });
+
+  quill.getHTML = () => {
+    return quill.root.innerHTML;
+  };
+
+  quill.setHTML = (html) => {
+    quill.root.innerHTML = html;
+  };
+
+  {% if form_content %}
+    quill.setHTML('{{ form_content | safe }}');
+  {% endif %}
+
+  var submit = function () {
+
+    // Get the contents of the text editor
+    var hidden_text_field = document.getElementById('content');
+    hidden_text_field.value = quill.getHTML();
+
+  }
+
+  // Attach the onclick function to the submit button Flask-WTF creates
+  var form = document.getElementsByTagName('form')[0];
+  form.onsubmit = submit;
+
+</script>
+{% endblock content %}
