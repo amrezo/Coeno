@@ -44,9 +44,12 @@
               <p class="tx-color-03 tx-16 mg-b-40">It's free to signup and only takes a minute.</p>
 
 
-                  <form method="POST" action="">
-                  {{ form.hidden_tag() }}
-                  <fieldset class="form-group">
+            <form method="POST" action="">
+              {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                  <div id="wizard">
+                    <h3>Company</h3>
+                    <section>
                       <div class="form-group">
                           {{ form.company_name.label(class="form-control-label") }}
 
@@ -61,6 +64,9 @@
                               {{ form.company_name(class="form-control form-control-lg") }}
                           {% endif %}
                       </div>
+                    </section>
+                    <h3>Personal Info</h3>
+                    <section>
                       <div class="form-group">
                           {{ form.first_name.label(class="form-control-label") }}
 
@@ -103,6 +109,9 @@
                               {{ form.username(class="form-control form-control-lg") }}
                           {% endif %}
                       </div>
+                    </section>
+                    <h3>Authentication</h3>
+                    <section>
                       <div class="form-group">
                           {{ form.email.label(class="form-control-label") }}
                           {% if form.email.errors %}
@@ -142,13 +151,12 @@
                               {{ form.confirm_password(class="form-control form-control-lg") }}
                           {% endif %}
                       </div>
-                  </fieldset>
-                  <div class="form-group tx-12">
-                    By clicking <strong>Create an Account</strong> below, you agree to our terms of service and privacy policy.
+                      <div class="form-group tx-12">
+                        By clicking <strong>Create an Account</strong> below, you agree to our terms of service and privacy policy.
+                      </div>
+                    </section>
                   </div>
-                  <div class="form-group">
-                      {{ form.submit(class="btn btn-brand-02 btn-block") }}
-                  </div>
+                </fieldset>
               </form>
             </div>
           </div><!-- sign-wrapper -->
@@ -168,6 +176,23 @@
 
 
     <script src="{{ url_for('static', filename='assets/js/dashforge.js') }}" ></script>
+
+    <script src="{{ url_for('static', filename='lib/jquery-steps/build/jquery.steps.min.js') }}"></script>
+    <script type="text/javascript">
+    $('#wizard').steps({
+      headerTag: 'h3',
+      bodyTag: 'section',
+      autoFocus: true,
+      titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
+      onFinished: function (event, currentIndex) {
+        $('form').submit();
+      },
+
+      labels: {
+        finish: "Create Account"
+      }
+    });
+    </script>
 
   </body>
 </html>

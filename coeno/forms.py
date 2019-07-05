@@ -16,7 +16,6 @@ class CompanyRegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Create Account')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -37,7 +36,6 @@ class MemberRegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Create Account')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
