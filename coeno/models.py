@@ -8,7 +8,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class Company(db.Model):
-    id = db.Column(db.String(2), primary_key=True, default=secrets.token_hex(2))
+    id = db.Column(db.String(), primary_key=True, default=secrets.token_hex(2))
     name = db.Column(db.String(120), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default_company.jpg')
     users = db.relationship('User', backref='company', lazy=True)
@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
+    company_id = db.Column(db.String(), db.ForeignKey('company.id'), nullable=False)
     liked = db.relationship('PostLike', foreign_keys='PostLike.user_id', backref='user', lazy='dynamic')
     disliked = db.relationship('PostDisLike', foreign_keys='PostDisLike.user_id', backref='user', lazy='dynamic')
 
