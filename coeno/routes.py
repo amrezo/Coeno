@@ -170,12 +170,24 @@ def like_action(post_id, action):
     post = Post.query.get_or_404(post_id)
     if action == 'like':
         current_user.like_post(post)
+        current_user.undislike_post(post)
         db.session.commit()
     if action == 'unlike':
         current_user.unlike_post(post)
         db.session.commit()
     return redirect(request.referrer)
 
+@app.route('/dislike/<int:post_id>/<action>')
+def dislike_action(post_id, action):
+    post = Post.query.get_or_404(post_id)
+    if action == 'dislike':
+        current_user.dislike_post(post)
+        current_user.unlike_post(post)
+        db.session.commit()
+    if action == 'undislike':
+        current_user.undislike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)
 
 @app.route("/<string:company_id>/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required

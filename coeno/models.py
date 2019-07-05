@@ -27,6 +27,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     liked = db.relationship('PostLike', foreign_keys='PostLike.user_id', backref='user', lazy='dynamic')
+    disliked = db.relationship('PostDisLike', foreign_keys='PostDisLike.user_id', backref='user', lazy='dynamic')
 
     def like_post(self, post):
         if not self.has_liked_post(post):
@@ -44,7 +45,28 @@ class User(db.Model, UserMixin):
             PostLike.user_id == self.id,
             PostLike.post_id == post.id).count() > 0
 
+    def dislike_post(self, post):
+        if not self.has_disliked_post(post):
+            dislike = PostDisLike(user_id=self.id, post_id=post.id)
+            db.session.add(dislike)
+
+    def undislike_post(self, post):
+        if self.has_disliked_post(post):
+            PostDisLike.query.filter_by(
+                user_id=self.id,
+                post_id=post.id).delete()
+
+    def has_disliked_post(self, post):
+        return PostDisLike.query.filter(
+            PostDisLike.user_id == self.id,
+            PostDisLike.post_id == post.id).count() > 0
+
 class PostLike(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+class PostDisLike(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
@@ -59,5 +81,6 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
+    dislikes = db.relationship('PostDisLike', backref='post', lazy='dynamic')
     responses = db.relationship('Post', lazy=True)
 Post.original_post_id = db.Column(db.Integer, db.ForeignKey(Post.id))
