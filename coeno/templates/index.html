@@ -1,8 +1,27 @@
 {% extends "layout.html" %}
 
+
+{% block empty %}
+{% if top_post or posts %}
+
+{% else %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container mt-4">
+      <div class="text-center">
+        <img src="{{ url_for('static', filename='images/empty.svg') }}" class="img-fluid mb-4 mx-wd-300" alt="No Posts">
+      </div>
+      <h6 align="center">You currently have no posts in your company workspace.</h6>
+      <p align="center">Be the first to create a post now!</p>
+      <div class="text-center mb-5">
+        <a href="{{ url_for('new_post', company_id=company_id) }}" class="btn btn-primary rounded-pill mr-2"><i class="mr-2" data-feather="plus" width=17></i>Create a New Post</a>
+      </div>
+    </div>
+</div>
+{% endif %}
+{% endblock empty %}
 <!-- Hero Content -->
 {% block hero %}
-
+{% if top_posts %}
 <div class="jumbotron jumbotron-fluid">
     <div class="container mt-4">
       <p><span><i class="mr-2" data-feather="trending-up" width=20 style="color: #00A3FF;"></i>Trending</span></p>
@@ -37,12 +56,12 @@
         </div>
         </div>
       </div>
-
+{% endif %}
 {% endblock hero %}
 
 <!-- Main Content -->
 {% block content %}
-
+{% if posts %}
 <p><span><i class="mr-2" data-feather="inbox" width=20 style="color: #00A3FF;"></i>All</span></p>
 <div class="card-columns">
     {% for post in posts %}
@@ -78,5 +97,5 @@
     </div>
     {% endfor %}
 </div>
-
+{% endif %}
 {% endblock content %}
