@@ -84,20 +84,30 @@
       <h3>Responses</h3>
       <div class="card">
         <div class="card-body">
-          <h6 class="card-title d-flex justify-content-center">Add a reponse</h6>
+          <h6 class="card-title d-flex justify-content-center">Add a response</h6>
           <p class="card-text d-flex justify-content-center">Raise a discussion about this post.</p>
           <div class="text-center">
             <a href="{{ url_for('response', company_id=company_id, post_id=post.id) }}" class="btn btn-secondary rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>Add a Response</a>
           </div>
         </div>
       </div>
+      {% if post.responses|length == 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ post.responses|length }} Response</h4>
+      {% elif post.responses|length > 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ post.responses|length }} Responses</h4>
+      {% endif %}
       {% for response in post.responses %}
-      <div class="card mt-3 shadow-sm">
+      <div class="card mt-2 shadow-sm">
         <div class="card-body">
           <span style="color: #ff9d00;"><i class="mr-2" data-feather="corner-up-right" width=20 style="color: #ff9d00;"></i><strong>Response</strong></span>
           <div class="row">
             <div class="col-10">
               <h4 class="card-title">{{ response.title }}</h4>
+              <p class="card-text">
+                <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" width="25">
+                  {{ response.author.first_name+" "+response.author.last_name }}
+                <small class="text-muted">· {{ response.date_posted.strftime('%b %d') }}</small>
+              </p>
             </div>
             <div class="col-2">
               <a href="{{ url_for('post', company_id=company_id, post_id=response.id) }}" class="btn btn-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>View</a>
