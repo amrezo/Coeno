@@ -7,8 +7,9 @@
           <img class="rounded-circle" src="{{ image_file }}">
         </div>
         <div class="media-body">
-          <h2 class="account-heading">{{ current_user.username }}</h2>
-          <p class="text-secondary">{{ current_user.email }}</p>
+          <h2 class="account-heading">{{ current_user.first_name+" "+current_user.last_name }} <span class="badge badge-primary">{{ current_user.role }}</span></h2>
+          <p>{{ current_user.email }}</p>
+          <p><a onclick="copyShow();" data-clipboard-text="https://www.coeno.app/register/member/{{ current_user.company_id }}" id="copy" href="#" class="btn btn-outline-primary rounded-pill btn-sm" data-toggle='tooltip' data-placement='top' title="Click to copy.">Invite Link</a><i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Invite co-workers and employees by sharing this link with them.'></i></p>
         </div>
       </div>
         <form method="POST" action="" enctype="multipart/form-data">
@@ -71,4 +72,11 @@
             </div>
         </form>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    <script type="text/javascript">
+      new ClipboardJS('#copy');
+      function copyShow() {
+        document.getElementById('copy').innerHTML="Copied!"
+      }
+    </script>
 {% endblock content %}
