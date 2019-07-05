@@ -34,18 +34,18 @@
     {% endif %}
     <p>{{ post.content | safe }}</p>
     <div class="mt-4">
-      <a href="#" class="btn btn-outline-primary rounded-pill mr-2"><i class="mr-2" data-feather="eye" width=17></i>{{ post.view_count }} Views</a>
+      <a href="#" class="btn btn-outline-primary rounded-pill mr-2 mb-2"><i class="mr-2" data-feather="eye" width=17></i>{{ post.view_count }} Views</a>
       {% if current_user.has_liked_post(post) %}
-        <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="btn btn-success rounded-pill mr-2">{{ post.likes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-up" width=17></i>I agree</a>
+        <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="btn btn-success rounded-pill mr-2 mb-2">{{ post.likes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-up" width=17></i>I agree</a>
       {% else %}
-      <a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="btn btn-outline-success rounded-pill mr-2">{{ post.likes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-up" width=17></i>I agree</a>
+      <a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="btn btn-outline-success rounded-pill mr-2 mb-2">{{ post.likes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-up" width=17></i>I agree</a>
       {% endif %}
       {% if current_user.has_disliked_post(post) %}
-        <a href="{{ url_for('dislike_action', post_id=post.id, action='undislike') }}" class="btn btn-danger rounded-pill mr-2">{{ post.dislikes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-down" width=17></i>I disagree</a>
+        <a href="{{ url_for('dislike_action', post_id=post.id, action='undislike') }}" class="btn btn-danger rounded-pill mr-2 mb-2">{{ post.dislikes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-down" width=17></i>I disagree</a>
       {% else %}
-      <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}" class="btn btn-outline-danger rounded-pill mr-2">{{ post.dislikes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-down" width=17></i>I disagree</a>
+      <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}" class="btn btn-outline-danger rounded-pill mr-2 mb-2">{{ post.dislikes.count() }}<i class="ml-1 mr-2" data-feather="thumbs-down" width=17></i>I disagree</a>
       {% endif %}
-        <a href="#responses" class="btn btn-outline-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.responses|length }} Responses</a>
+        <a href="#responses" class="btn btn-outline-warning rounded-pill mr-2 mb-2"><i class="mr-2" data-feather="message-square" width=17></i>{{ post.responses|length }} Responses</a>
     </div>
   </div>
 </div>
