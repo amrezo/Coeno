@@ -16,7 +16,7 @@ def landing():
     else:
         return render_template("landing.html")
 
-@app.route("/<string:company_id>")
+@app.route("/home/<string:company_id>")
 def home(company_id):
     if current_user.is_authenticated:
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
@@ -222,7 +222,7 @@ def delete_post(post_id, company_id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home', company_id=company_id))
 
-@app.route("/login", methods=['POST'])
+@app.route("/login", methods=['GET','POST'])
 def find_login():
     if current_user.is_authenticated:
         company_id = current_user.company_id
