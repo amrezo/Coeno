@@ -79,7 +79,7 @@ class Post(db.Model):
     view_count = db.Column(db.Integer, nullable=True, default=0)
     type = db.Column(db.String(100), nullable=False) #suggestion, response or notion
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
+    company_id = db.Column(db.String(), db.ForeignKey('company.id'), nullable=False)
     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
     dislikes = db.relationship('PostDisLike', backref='post', lazy='dynamic')
     responses = db.relationship('Post', lazy=True)
