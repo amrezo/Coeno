@@ -87,3 +87,7 @@ class ResponseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = HiddenField('Content', validators=[DataRequired()])
     submit = SubmitField('Submit Response')
+
+class FindLogin(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Find')

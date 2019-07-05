@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
+
+    <title>Coeno | Find My Login</title>
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/ionicons/css/ionicons.min.css') }}">
+
+    <!-- DashForge CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/dashforge.dashboard.css') }}">
+
+    <!-- PaceJS - Loading Indicator -->
+    <script src="{{ url_for('static', filename='pace/pace.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pace/pace.css') }}">
+  </head>
+  <body>
+
+
+    <div class="content content-fixed content-auth">
+      <div class="container">
+        <div class="media align-items-stretch justify-content-center ht-100p pos-relative">
+          <div class="media-body align-items-center d-none d-lg-flex">
+            <div class="mx-wd-600">
+              <img src="{{ url_for('static', filename='images/signin.svg') }}" class="img-fluid" alt="Sign in Image">
+            </div>
+          </div><!-- media-body -->
+          <div class="sign-wrapper mg-lg-l-50 mg-xl-l-60">
+            <div class="wd-100p">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-dismissible alert-{{ category }}">
+                      <button type="button" class="close" data-dismiss="alert">x</button>
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+              <h3 class="tx-color-01 mg-b-5">Find my Login</h3>
+              <p class="tx-color-03 tx-16 mg-b-40">Please provide your email address so we can find your company login page.</p>
+
+
+
+              <form method="POST" action="">
+                  {{ form.hidden_tag() }}
+                  <fieldset class="form-group">
+                      <div class="form-group">
+                          {{ form.email.label(class="form-control-label") }}
+                          {% if form.email.errors %}
+                              {{ form.email(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.email.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.email(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+                  </fieldset>
+                  <div class="form-group">
+                      {{ form.submit(class="btn btn-brand-02 btn-block") }}
+                  </div>
+              </form>
+            </div>
+          </div><!-- sign-wrapper -->
+        </div><!-- media -->
+      </div><!-- container -->
+    </div><!-- content -->
+
+
+    <script src="{{ url_for('static', filename='lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+
+
+    <script src="{{ url_for('static', filename='assets/js/dashforge.js') }}" ></script>
+
+
+
+  </body>
+</html>

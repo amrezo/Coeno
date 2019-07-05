@@ -4,7 +4,7 @@ from PIL import Image
 from sqlalchemy import desc
 from flask import render_template, url_for, flash, redirect, request, abort
 from coeno import app, db, bcrypt
-from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginForm, UpdateAccountForm, PostForm, ResponseForm
+from coeno.forms import MemberRegistrationForm, CompanyRegistrationForm, LoginForm, UpdateAccountForm, PostForm, ResponseForm, FindLogin
 from coeno.models import User, Post, Company
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -221,3 +221,19 @@ def delete_post(post_id, company_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home', company_id=company_id))
+
+@app.route("/login", methods=['POST'])
+def find_login():
+    if current_user.is_authenticated:
+        company_id = current_user.company_id
+        return redirect(url_for('home', company_id=company_id))
+    else:
+        form = FindLogin()
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user:
+                company_id = user.company_id
+                return redirect(url_for('login', company_id=company_id))
+            else:
+                flash('No account with this email found. Please check your email and try again.', 'danger')
+        return render_template('findlogin.html', form=form)
