@@ -32,7 +32,7 @@ def register_company():
     form = CompanyRegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        company = Company(name=form.company_name.data)
+        company = Company(name=form.company_name.data, id=secrets.token_hex(2))
         db.session.add(company)
         db.session.commit()
         user = User(username=form.username.data, first_name=form.first_name.data, last_name=form.last_name.data, role="owner", email=form.email.data, company_id=company.id, password=hashed_password)
