@@ -29,8 +29,6 @@ def home(company_id):
 
 @app.route("/register/company", methods=['GET', 'POST'])
 def register_company():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
     form = CompanyRegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
