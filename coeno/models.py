@@ -134,7 +134,7 @@ class Step(db.Model):
     content = db.Column(db.Text, nullable=False)
     complete = db.Column(db.Boolean, nullable=False, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    decision_id = db.Column(db.String(4), db.ForeignKey('decision.id'), nullable=False)
+    decision_id = db.Column(db.Integer, db.ForeignKey('decision.id'), nullable=False)
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -154,7 +154,7 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     type = db.Column(db.String(100), nullable=False) # support, agree, recognize, disagree
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    feedback_id = db.Column(db.String(4), db.ForeignKey('feedback.id'), nullable=False)
+    feedback_id = db.Column(db.Integer, db.ForeignKey('feedback.id'), nullable=False)
 
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
