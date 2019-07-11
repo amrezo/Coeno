@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <span style="color: #9500ff;"><i class="mr-2" data-feather="bar-chart-2" width=20 style="color: #9500ff;"></i><strong>Poll</strong></span>
+    <h1 class="mt-2">{{ poll.title }}</h1>
+    <p><large class="text-muted">Last updated on {{ poll.date_posted.strftime('%b %d, %Y') }}</large></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-2">
+    <img class="rounded-circle mb-3" src="{{ url_for('static', filename='profile_pics/' + poll.author.image_file) }}" width="50">
+    <h6><span class="text-muted">by</span> {{ poll.author.first_name+" "+poll.author.last_name }}</h6>
+    {% if poll.author.title %}
+    <p class="text-muted">{{ poll.author.title }}</p>
+    {% endif %}
+  </div>
+  <div class="col-lg-10">
+    {% if poll.author == current_user %}
+      <div>
+        <button type="button" class="btn btn-danger btn-sm m-1 rounded-pill" data-toggle="modal" data-target="#deletePollModal">Delete</button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+  <!-- Modal -->
+  <div class="modal fade effect-scale" id="deletePollModal" tabindex="-1" role="dialog" aria-labelledby="deletePollModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Poll?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('delete_poll', poll_id=poll.id, company_id=company_id) }}" method="POST">
+            <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block debate %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+      <h3 id="responses">Items</h3>
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title d-flex justify-content-center">Add an item</h6>
+          <p class="card-text d-flex justify-content-center">Add a poll item to the poll.</p>
+          <div class="text-center">
+            <a href="{{ url_for('new_poll_item', company_id=company_id, poll_id=poll.id) }}" class="btn btn-secondary rounded-pill mr-2"><i class="mr-2" data-feather="check-circle" width=17></i>Add an Item</a>
+          </div>
+        </div>
+      </div>
+      {% if poll.poll_items|length == 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ poll.poll_items|length }} Item</h4>
+      {% elif poll.poll_items|length > 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ poll.poll_items|length }} Items</h4>
+      {% endif %}
+      {% if vote %}
+        {% for item in poll.poll_items %}
+        <div class="card mt-2 shadow-sm">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-1">
+                <div class="text-center">
+                  <i data-feather="thumbs-up" style="color: #ff9d00;"></i>
+                  <p class="card-text mt-3">{{ item.votes.count() }} votes</p>
+                </div>
+                {% if current_user.has_voted(item) %}
+                  <a href="{{ url_for('vote', poll_item_id=item.id, action='unvote') }}" class="btn btn-success rounded-pill mt-2">Remove</a>
+                {% endif %}
+              </div>
+              <div class="col-9">
+                <h4 class="card-title">{{ item.title }}</h4>
+                <p class="card-text">
+                  <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + item.author.image_file) }}" width="25">
+                    Added by {{ item.author.first_name+" "+item.author.last_name }}
+                </p>
+              </div>
+              <div class="col-2 text-center">
+                {% if item.author == current_user %}
+                <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteItemModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade effect-scale" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteItemModal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Item?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+                <form action="{{ url_for('delete_item', company_id=company_id, item_id=item.id) }}" method="POST">
+                  <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        {% for item in poll.poll_items %}
+        <div class="card mt-2 shadow-sm">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-1">
+                <div class="text-center">
+                  <i data-feather="thumbs-up" style="color: #ff9d00;"></i>
+                  <p class="card-text mt-3">{{ item.votes.count() }} votes</p>
+                </div>
+                {% if current_user.has_voted(item) %}
+                  <a href="{{ url_for('vote', poll_item_id=item.id, action='unvote') }}" class="btn btn-success rounded-pill mt-2">Remove</a>
+                {% else %}
+                <a href="{{ url_for('vote', poll_item_id=item.id, action='vote') }}" class="btn btn-outline-success rounded-pill mt-2">Vote</a>
+                {% endif %}
+              </div>
+              <div class="col-9">
+                <h4 class="card-title">{{ item.title }}</h4>
+                <p class="card-text">
+                  <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + item.author.image_file) }}" width="25">
+                    Added by {{ item.author.first_name+" "+item.author.last_name }}
+                </p>
+              </div>
+              <div class="col-2 text-center">
+                {% if item.author == current_user %}
+                <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteItemModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade effect-scale" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteItemModal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Item?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+                <form action="{{ url_for('delete_item', company_id=company_id, item_id=item.id) }}" method="POST">
+                  <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+
+  </div>
+</div>
+{% endblock debate %}

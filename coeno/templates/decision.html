@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <span style="color: #9500ff;"><i class="mr-2" data-feather="arrow-right-circle" width=20 style="color: #9500ff;"></i><strong>Decision</strong></span>
+    <h1 class="mt-2">{{ decision.title }}</h1>
+    <p><large class="text-muted">Last updated on {{ decision.date_posted.strftime('%b %d, %Y') }}</large></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-2">
+    <img class="rounded-circle mb-3" src="{{ url_for('static', filename='profile_pics/' + decision.author.image_file) }}" width="50">
+    <h6><span class="text-muted">by</span> {{ decision.author.first_name+" "+decision.author.last_name }}</h6>
+    {% if decision.author.title %}
+    <p class="text-muted">{{ decision.author.title }}</p>
+    {% endif %}
+  </div>
+  <div class="col-lg-10">
+    {% if decision.author == current_user %}
+      <div>
+        <button type="button" class="btn btn-danger btn-sm m-1 rounded-pill" data-toggle="modal" data-target="#deleteDecisionModal">Delete</button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+  <!-- Modal -->
+  <div class="modal fade effect-scale" id="deleteDecisionModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Decision?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('delete_decision', decision_id=decision.id, company_id=company_id) }}" method="POST">
+            <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block debate %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+      <h3 id="responses">Steps</h3>
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title d-flex justify-content-center">Add a step</h6>
+          <p class="card-text d-flex justify-content-center">Add a step to the decision-making process.</p>
+          <div class="text-center">
+            <a href="{{ url_for('new_step', company_id=company_id, decision_id=decision.id) }}" class="btn btn-secondary rounded-pill mr-2"><i class="mr-2" data-feather="check-circle" width=17></i>Add a Step</a>
+          </div>
+        </div>
+      </div>
+      {% if decision.steps|length == 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ decision.steps|length }} Step</h4>
+      {% elif decision.steps|length > 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ decision.steps|length }} Steps</h4>
+      {% endif %}
+      {% for step in decision.steps %}
+      <div class="card mt-2 shadow-sm">
+        <div class="card-body">
+          <span style="color: #ff9d00;"><i class="mr-2" data-feather="check-circle" width=20 style="color: #ff9d00;"></i><strong>Step #{{ step.number }}</strong></span>
+          <div class="row">
+            <div class="col-10">
+              {% if step.complete|string == 'True' %}
+              <del style="color: gray;"><h4 class="card-title text-muted">{{ step.title }}</h4></del>
+              <del style="color: gray;"><p class="card-text text-muted">{{ step.content|safe }}</p></del>
+              {% else %}
+              <h4 class="card-title">{{ step.title }}</h4>
+              <p class="card-text">{{ step.content|safe }}</p>
+              {% endif %}
+
+              <p class="card-text">
+                <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + step.author.image_file) }}" width="25">
+                  {{ step.author.first_name+" "+step.author.last_name }}
+                <small class="text-muted">· {{ step.date_posted.strftime('%b %d') }}</small>
+              </p>
+            </div>
+            <div class="col-2 text-center">
+              {% if step.author == current_user %}
+              <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteStepModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
+              {% endif %}
+              {% if step.complete|string == 'False' %}
+              <button type="button" class="btn btn-success rounded-pill mr-2 mt-2" data-toggle="modal" data-target="#markDoneModal"><i class="mr-2" data-feather="check" width=17></i>Done</button>
+              {% else %}
+              <button type="button" class="btn btn-success rounded-pill mr-2 mt-2" data-toggle="modal" data-target="#markNotDoneModal"><i class="mr-2" data-feather="check" width=17></i>Not Done</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade effect-scale" id="deleteStepModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete Step?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+              <form action="{{ url_for('delete_step', company_id=company_id, step_id=step.id) }}" method="POST">
+                <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade effect-scale" id="markDoneModal" tabindex="-1" role="dialog" aria-labelledby="markDoneModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Mark as Done?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+              <form action="{{ url_for('mark_step_done', company_id=company_id, step_id=step.id) }}" method="POST">
+                <input class="btn btn-success rounded-pill" type="submit" value="Yes">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade effect-scale" id="markNotDoneModal" tabindex="-1" role="dialog" aria-labelledby="markNotDoneModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Are you sure?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+              <form action="{{ url_for('mark_step_undone', company_id=company_id, step_id=step.id) }}" method="POST">
+                <input class="btn btn-success rounded-pill" type="submit" value="Yes">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+  </div>
+</div>
+{% endblock debate %}

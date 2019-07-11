@@ -6,22 +6,8 @@
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">{{ legend }}</legend>
             <div class="form-group">
-                {{ form.type.label(class="form-control-label") }}
-                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='A suggestion is a fully-formed position on a topic. A notion is simply an idea (a suggestion in its infancy).'></i>
-                {% if form.type.errors %}
-                    {{ form.type(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.type.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.type(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
                 {{ form.department.label(class="form-control-label") }}
-                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Include the department to which this post pertains in your company.'></i>
+                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Include the department to which this feedback request pertains in your company.'></i>
                 {% if form.department.errors %}
                     {{ form.department(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
@@ -35,7 +21,7 @@
             </div>
             <div class="form-group">
                 {{ form.topic.label(class="form-control-label") }}
-                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='What topic does your post address?'></i>
+                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='What topic does your feedback request address?'></i>
                 {% if form.topic.errors %}
                     {{ form.topic(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
@@ -49,7 +35,7 @@
             </div>
             <div class="form-group">
                 {{ form.title.label(class="form-control-label") }}
-                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Please provide a meaningful title so that the topic of your post is easily identifiable to others.'></i>
+                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Please provide a meaningful title so that the topic of your feedback request is easily identifiable to others.'></i>
                 {% if form.title.errors %}
                     {{ form.title(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
@@ -63,7 +49,7 @@
             </div>
             <div class="form-group">
                 {{ form.content.label(class="form-control-label") }}
-                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Provide as much details as possible for your suggestion or notion.'></i>
+                <i class="ml-1" data-feather="help-circle" width=17 data-toggle='tooltip' data-placement='right' title='Provide as much details as possible for your feedback request.'></i>
                 {% if form.content.errors %}
                     {{ form.content(class="form-control form-control-lg is-invalid", id="hidden_field") }}
                     <div id="quillInline" class="is-invalid">

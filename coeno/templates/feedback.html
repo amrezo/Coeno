@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <span style="color: #9500ff;"><i class="mr-2" data-feather="help-circle" width=20 style="color: #9500ff;"></i><strong>Feedback Request</strong></span>
+    <h1 class="mt-2">{{ feedback.title }}</h1>
+    <p><large class="text-muted">Last updated on {{ feedback.date_posted.strftime('%b %d, %Y') }}</large></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-2">
+    <img class="rounded-circle mb-3" src="{{ url_for('static', filename='profile_pics/' + feedback.author.image_file) }}" width="50">
+    <h6><span class="text-muted">by</span> {{ feedback.author.first_name+" "+feedback.author.last_name }}</h6>
+    {% if feedback.author.title %}
+    <p class="text-muted">{{ feedback.author.title }}</p>
+    {% endif %}
+  </div>
+  <div class="col-lg-10">
+    {% if feedback.author == current_user %}
+      <div>
+        <button type="button" class="btn btn-danger btn-sm m-1 rounded-pill" data-toggle="modal" data-target="#deleteFeedbackModal">Delete</button>
+      </div>
+    {% endif %}
+    <p>{{ feedback.content | safe }}</p>
+  </div>
+</div>
+
+  <!-- Modal -->
+  <div class="modal fade effect-scale" id="deleteFeedbackModal" tabindex="-1" role="dialog" aria-labelledby="deleteFeedbackModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Feedback Request?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('delete_feedback', feedback_id=feedback.id, company_id=company_id) }}" method="POST">
+            <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block debate %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+      <h3 id="responses">Comments</h3>
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title d-flex justify-content-center">Add a comment</h6>
+          <p class="card-text d-flex justify-content-center">Respond back to the feedback request with a comment.</p>
+          <div class="text-center">
+            <a href="{{ url_for('new_comment', company_id=company_id, feedback_id=feedback.id) }}" class="btn btn-secondary rounded-pill mr-2"><i class="mr-2" data-feather="message-circle" width=17></i>Add a Comment</a>
+          </div>
+        </div>
+      </div>
+      {% if feedback.comments|length == 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ feedback.comments|length }} Comment</h4>
+      {% elif feedback.comments|length > 1 %}
+      <h4 class="mt-4" style="color: #ff9d00;">{{ feedback.comments|length }} Comments</h4>
+      {% endif %}
+      {% for comment in feedback.comments %}
+      <div class="card mt-2 shadow-sm">
+        <div class="card-body">
+          <span style="color: #ff9d00;"><i class="mr-2" data-feather="message-circle" width=20 style="color: #ff9d00;"></i><strong>{{ comment.author.first_name.upper()+" "+ comment.type.upper() }}S</strong></span>
+          <div class="row">
+            <div class="col-10">
+              <h4 class="card-title mt-2">{{ comment.title }}</h4>
+              <p class="card-text">{{ comment.content|safe }}</p>
+              <p class="card-text">
+                <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file) }}" width="25">
+                  {{ comment.author.first_name+" "+comment.author.last_name }}
+                <small class="text-muted">· {{ comment.date_posted.strftime('%b %d') }}</small>
+              </p>
+            </div>
+            <div class="col-2 text-center">
+              {% if comment.author == current_user %}
+              <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteCommentModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade effect-scale" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info rounded-pill" data-dismiss="modal">Close</button>
+              <form action="{{ url_for('delete_comment', company_id=company_id, comment_id=comment.id) }}" method="POST">
+                <input class="btn btn-danger rounded-pill" type="submit" value="Delete">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+  </div>
+</div>
+{% endblock debate %}

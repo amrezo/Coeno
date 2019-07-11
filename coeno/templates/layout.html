@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/ionicons/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/jqvmap/jqvmap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/quill/quill.core.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/quill/quill.snow.css') }}">
@@ -43,20 +45,13 @@
   <body class="page-profile">
 
     <header class="navbar navbar-header navbar-header-fixed">
-      <a href="" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
       <div class="navbar-brand">
-        <a href="{{ url_for('home', company_id=company_id) }}" class="df-logo">coeno</a>
+        <a href="{{ url_for('home', company_id=company_id) }}" class="df-logo">Coeno</a>
       </div><!-- navbar-brand -->
-      <div id="navbarMenu" class="navbar-menu-wrapper">
-        <div class="navbar-menu-header">
-          <a href="{{ url_for('home', company_id=company_id) }}" class="df-logo">coeno</a>
-          <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
-        </div><!-- navbar-menu-header -->
-      </div><!-- navbar-menu-wrapper -->
       <div class="navbar-right">
-        <!-- <a id="navbarSearch" href="" class="search-link"><i data-feather="search"></i></a> -->
+      {% block searchButton %}{% endblock %}
+      <a class="nav-item btn btn-buy" href="#" id="newButton" data-toggle="modal" data-target="#newPostModal"><i class="mr-1" data-feather="plus"></i>New</a>
 
-      <a class="nav-item btn btn-buy" href="{{ url_for('new_post', company_id=company_id) }}"><i class="mr-1" data-feather="plus"></i>New Post</a>
         <div class="dropdown dropdown-profile">
           <a href="" class="dropdown-link" data-toggle="dropdown" data-display="static">
             <div class="avatar avatar-sm"><img src="{{ image_file }}" class="rounded-circle" alt=""></div>
@@ -65,6 +60,9 @@
             <div class="avatar avatar-lg mg-b-15"><img src="{{ image_file }}" class="rounded-circle" alt=""></div>
             <h6 class="tx-semibold mg-b-25">{{ current_user.username }}</h6>
             <a href="{{ url_for('account', company_id=company_id) }}" class="dropdown-item"><i data-feather="edit-3"></i>Edit Profile</a>
+            {% if current_user.role == "owner"%}
+              <a href="{{ url_for('company', company_id=company_id) }}" class="dropdown-item"><i data-feather="briefcase"></i>Company Profile</a>
+            {% endif %}
             <a href="{{ url_for('logout', company_id=company_id) }}" class="dropdown-item"><i data-feather="log-out"></i>Sign Out</a>
           </div><!-- dropdown-menu -->
         </div><!-- dropdown -->
@@ -77,23 +75,23 @@
           <a id="navbarSearchClose" href="" class="link-03 mg-l-5 mg-lg-l-10"><i data-feather="x"></i></a>
         </div><!-- navbar-search-header -->
         <div class="navbar-search-body">
-          <label class="tx-10 tx-medium tx-uppercase tx-spacing-1 tx-color-03 mg-b-10 d-flex align-items-center">Recent Searches</label>
+          <label class="tx-10 tx-medium tx-uppercase tx-spacing-1 tx-color-03 mg-b-10 d-flex align-items-center">Search by Department</label>
           <ul class="list-unstyled">
-            <li><a href="dashboard-one.html">modern dashboard</a></li>
-            <li><a href="app-calendar.html">calendar app</a></li>
-            <li><a href="../../collections/modal.html">modal examples</a></li>
-            <li><a href="../../components/el-avatar.html">avatar</a></li>
+            {% for dept in depts %}
+            <li><a href="dashboard-one.html">{{ dept.title }}</a></li>
+            {% endfor %}
           </ul>
 
           <hr class="mg-y-30 bd-0">
 
-          <label class="tx-10 tx-medium tx-uppercase tx-spacing-1 tx-color-03 mg-b-10 d-flex align-items-center">Search Suggestions</label>
+          <label class="tx-10 tx-medium tx-uppercase tx-spacing-1 tx-color-03 mg-b-10 d-flex align-items-center">Search by Post Type</label>
 
           <ul class="list-unstyled">
-            <li><a href="dashboard-one.html">cryptocurrency</a></li>
-            <li><a href="app-calendar.html">button groups</a></li>
-            <li><a href="../../collections/modal.html">form elements</a></li>
-            <li><a href="../../components/el-avatar.html">contact app</a></li>
+            <li><a href="dashboard-one.html"><i class="mr-2" data-feather="edit-2" width=15></i>Notion</a></li>
+            <li><a href="app-calendar.html"><i class="mr-2" data-feather="edit" width=15></i>Suggestion</a></li>
+            <li><a href="../../collections/modal.html"><i class="mr-2" data-feather="arrow-right-circle" width=15></i>Decision</a></li>
+            <li><a href="../../components/el-avatar.html"><i class="mr-2" data-feather="bar-chart-2" width=15></i>Poll</a></li>
+            <li><a href="../../components/el-avatar.html"><i class="mr-2" data-feather="heart" width=15></i>Feedback</a></li>
           </ul>
         </div><!-- navbar-search-body -->
       </div><!-- navbar-search -->
@@ -121,10 +119,26 @@
       </div><!-- container -->
     </div><!-- content -->
     {% block debate %}{% endblock %}
+
+    <!-- New Post Modal -->
+    <div class="modal fade effect-scale" id="newPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p><a class="nav-item btn btn-primary btn-block" href="{{ url_for('new_post', company_id=company_id) }}"><i class="mr-1" data-feather="edit"></i>Post</a></p>
+            <p><a class="nav-item btn btn-success btn-block" href="{{ url_for('new_decision', company_id=company_id) }}"><i class="mr-1" data-feather="arrow-right-circle"></i>Decision</a></p>
+            <p><a class="nav-item btn btn-warning btn-block" href="{{ url_for('new_poll', company_id=company_id) }}"><i class="mr-1" data-feather="bar-chart-2"></i>Poll</a></p>
+            <a class="nav-item btn btn-danger btn-block" href="{{ url_for('new_feedback', company_id=company_id) }}"><i class="mr-1" data-feather="heart"></i>Feedback</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
     <footer class="footer">
       <div>
-        <span>&copy; 2019 Coeno v0.0.1 </span>
-        <span>Created by <a href="https://www.github.com/amrezo" target="_blank">Amr Al-Refae</a></span>
+        <span>&copy; 2019 Coeno </span>
       </div>
     </footer>
 

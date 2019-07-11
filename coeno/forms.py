@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, HiddenField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from coeno.models import User
 
@@ -77,9 +77,46 @@ class UpdateAccountForm(FlaskForm):
 
 class PostForm(FlaskForm):
     type = SelectField('Type', choices=[('suggestion', 'Suggestion'), ('notion', 'Notion')], validators=[DataRequired()])
+    department = SelectField('Department', coerce=int, validators=[DataRequired()])
+    topic = StringField('Topic', validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     content = HiddenField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+
+class DecisionForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    department = SelectField('Department', coerce=int, validators=[DataRequired()])
+    topic = StringField('Topic', validators=[DataRequired()])
+    submit = SubmitField('Create Decision')
+
+class StepForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = HiddenField('Content', validators=[DataRequired()])
+    number = SelectField('Step Number (max 7)', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7')], validators=[DataRequired()])
+    submit = SubmitField('Add Step')
+
+class FeedbackForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    department = SelectField('Department', coerce=int, validators=[DataRequired()])
+    topic = StringField('Topic', validators=[DataRequired()])
+    content = HiddenField('Content', validators=[DataRequired()])
+    submit = SubmitField('Create Request')
+
+class CommentForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = HiddenField('Content', validators=[DataRequired()])
+    type = SelectField('Feedback Type', choices=[('support', 'I support'), ('agree', 'I agree'), ('recognize', 'I recognize'), ('disagree', 'I disagree')], validators=[DataRequired()])
+    submit = SubmitField('Add Comment')
+
+class PollForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    department = SelectField('Department', coerce=int, validators=[DataRequired()])
+    topic = StringField('Topic', validators=[DataRequired()])
+    submit = SubmitField('Create Poll')
+
+class PollItemForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    submit = SubmitField('Add Poll Item')
 
 class ResponseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -89,3 +126,10 @@ class ResponseForm(FlaskForm):
 class FindLogin(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Find')
+
+class UpdateCompanyForm(FlaskForm):
+    name = StringField('Company Name',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    picture = FileField('Update Company Picture', validators=[FileAllowed(['jpg', 'png'])])
+    departments = StringField('Company Departments (separate with commas)', validators=[DataRequired()])
+    submit = SubmitField('Update Company Profile')

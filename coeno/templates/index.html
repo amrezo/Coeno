@@ -2,7 +2,7 @@
 
 
 {% block empty %}
-{% if top_post or posts %}
+{% if top_post or posts or decisions or feedbacks or polls %}
 
 {% else %}
 <div class="jumbotron jumbotron-fluid">
@@ -13,7 +13,7 @@
       <h6 align="center">You currently have no posts in your company workspace.</h6>
       <p align="center">Be the first to create a post now!</p>
       <div class="text-center mb-5">
-        <a href="{{ url_for('new_post', company_id=company_id) }}" class="btn btn-primary rounded-pill mr-2"><i class="mr-2" data-feather="plus" width=17></i>Create a New Post</a>
+        <a href="#" class="btn btn-primary rounded-pill mr-2" data-toggle="modal" data-target="#newPostModal"><i class="mr-2" data-feather="plus" width=17></i>Create a New Post</a>
       </div>
     </div>
 </div>
@@ -62,7 +62,7 @@
 <!-- Main Content -->
 {% block content %}
 {% if posts %}
-<p><span><i class="mr-2" data-feather="inbox" width=20 style="color: #00A3FF;"></i>All</span></p>
+<p><span><i class="mr-2" data-feather="inbox" width=20 style="color: #00A3FF;"></i>Recent Posts</span></p>
 <div class="card-columns">
     {% for post in posts %}
     <div class="card shadow-sm">
@@ -98,4 +98,82 @@
     {% endfor %}
 </div>
 {% endif %}
+{% if decisions %}
+<p class="mt-4"><span><i class="mr-2" data-feather="inbox" width=20 style="color: #9500ff;"></i>Recent Decisions</span></p>
+<div class="card-columns">
+    {% for decision in decisions %}
+    <div class="card shadow-sm">
+        <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #9500ff;"></span>
+        <div class="card-body">
+          <span style="color: #9500ff;"><i class="mr-2" data-feather="arrow-right-circle" width=15 style="color: #9500ff;"></i><strong>Decision</strong></span>
+        <a href="{{ url_for('decision', company_id=company_id, decision_id=decision.id) }}" class="card-link">
+          <h5 class="card-title mt-3">{{ decision.title }}</h5>
+        </a>
+        <p class="card-text">
+          <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + decision.author.image_file) }}" width="25">
+            {{ decision.author.first_name+" "+decision.author.last_name }}
+          <small class="text-muted">· {{ decision.date_posted.strftime('%b %d') }}</small>
+        </p>
+        <p class="card-text mt-3 d-flex justify-content-end">
+          <small class="text-muted"><i class="mr-1" data-feather="check-circle" width=17></i>Steps: {{ decision.steps|length }}</small>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if feedbacks %}
+<p class="mt-4"><span><i class="mr-2" data-feather="inbox" width=20 style="color: #00c7c0;"></i>Recent Feedback Requests</span></p>
+<div class="card-columns">
+    {% for feedback in feedbacks %}
+    <div class="card shadow-sm">
+        <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #00c7c0;"></span>
+        <div class="card-body">
+          <span style="color: #00c7c0;"><i class="mr-2" data-feather="arrow-right-circle" width=15 style="color: #00c7c0;"></i><strong>Feedback</strong></span>
+        <a href="{{ url_for('feedback', company_id=company_id, feedback_id=feedback.id) }}" class="card-link">
+          <h5 class="card-title mt-3">{{ feedback.title }}</h5>
+          <p class="card-text" style="color: black;">{{ feedback.content | truncate(100) | safe }}</p>
+        </a>
+        <p class="card-text">
+          <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + feedback.author.image_file) }}" width="25">
+            {{ feedback.author.first_name+" "+feedback.author.last_name }}
+          <small class="text-muted">· {{ feedback.date_posted.strftime('%b %d') }}</small>
+        </p>
+        <p class="card-text mt-3 d-flex justify-content-end">
+          <small class="text-muted"><i class="mr-1" data-feather="message-circle" width=17></i>Comments: {{ feedback.comments|length }}</small>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% if polls %}
+<p class="mt-4"><span><i class="mr-2" data-feather="inbox" width=20 style="color: #f79400;"></i>Recent Polls</span></p>
+<div class="card-columns">
+    {% for poll in polls %}
+    <div class="card shadow-sm">
+        <span style="height: 5px; width: 100%; content: ''; display: block; background-color: #f79400;"></span>
+        <div class="card-body">
+          <span style="color: #f79400;"><i class="mr-2" data-feather="pie-chart" width=15 style="color: #f79400;"></i><strong>Poll</strong></span>
+        <a href="{{ url_for('poll', company_id=company_id, poll_id=poll.id) }}" class="card-link">
+          <h5 class="card-title mt-3">{{ poll.title }}</h5>
+        </a>
+        <p class="card-text">
+          <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + poll.author.image_file) }}" width="25">
+            {{ poll.author.first_name+" "+poll.author.last_name }}
+          <small class="text-muted">· {{ poll.date_posted.strftime('%b %d') }}</small>
+        </p>
+        <p class="card-text mt-3 d-flex justify-content-end">
+          <small class="text-muted"><i class="mr-1" data-feather="bar-chart-2" width=17></i>Items: {{ poll.poll_items|length }}</small>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% endblock content %}
+
+{% block searchButton %}
+<a id="navbarSearch" href="" class="search-link"><i data-feather="search"></i></a>
+{% endblock searchButton %}
