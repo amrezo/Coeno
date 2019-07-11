@@ -67,7 +67,7 @@
       {% elif poll.poll_items|length > 1 %}
       <h4 class="mt-4" style="color: #ff9d00;">{{ poll.poll_items|length }} Items</h4>
       {% endif %}
-      {% if vote %}
+      {% if vote is not none %}
         {% for item in poll.poll_items %}
         <div class="card mt-2 shadow-sm">
           <div class="card-body">
@@ -116,7 +116,7 @@
           </div>
         </div>
         {% endfor %}
-      {% else %}
+      {% elif vote is none %}
         {% for item in poll.poll_items %}
         <div class="card mt-2 shadow-sm">
           <div class="card-body">
