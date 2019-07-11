@@ -170,7 +170,7 @@ class PollItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    poll_id = db.Column(db.String(4), db.ForeignKey('poll.id'), nullable=False)
+    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
     votes = db.relationship('ItemVote', backref='poll_item', lazy='dynamic', cascade='all,delete')
 
 class ItemVote(db.Model):
