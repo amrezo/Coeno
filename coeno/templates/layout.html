@@ -45,9 +45,9 @@
   <body class="page-profile">
 
     <header class="navbar navbar-header navbar-header-fixed">
-      <div class="navbar-brand">
-        <a href="{{ url_for('home', company_id=company_id) }}" class="df-logo">Coeno</a>
-      </div><!-- navbar-brand -->
+      <a class="navbar-brand" href="{{ url_for('home', company_id=company_id) }}">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Cooeno Logo" width=35 height=35>
+      </a><!-- navbar-brand -->
       <div class="navbar-right">
       {% block searchButton %}{% endblock %}
       <a class="nav-item btn btn-buy" href="#" id="newButton" data-toggle="modal" data-target="#newPostModal"><i class="mr-1" data-feather="plus"></i>New</a>
