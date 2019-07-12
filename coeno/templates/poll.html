@@ -121,7 +121,7 @@
         <div class="card mt-2 shadow-sm">
           <div class="card-body">
             <div class="row">
-              <div class="col-1">
+              <div class="col-lg-1">
                 <div class="text-center">
                   <i data-feather="thumbs-up" style="color: #ff9d00;"></i>
                   <p class="card-text mt-3">{{ item.votes.count() }} votes</p>
@@ -132,14 +132,14 @@
                 <a href="{{ url_for('vote', poll_item_id=item.id, action='vote') }}" class="btn btn-outline-success rounded-pill mt-2">Vote</a>
                 {% endif %}
               </div>
-              <div class="col-9">
+              <div class="col-lg-9">
                 <h4 class="card-title">{{ item.title }}</h4>
                 <p class="card-text">
                   <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + item.author.image_file) }}" width="25">
                     Added by {{ item.author.first_name+" "+item.author.last_name }}
                 </p>
               </div>
-              <div class="col-2 text-center">
+              <div class="col-lg-2 text-center">
                 {% if item.author == current_user %}
                 <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteItemModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
                 {% endif %}

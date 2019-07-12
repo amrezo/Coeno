@@ -73,7 +73,7 @@
         <div class="card-body">
           <span style="color: #ff9d00;"><i class="mr-2" data-feather="message-circle" width=20 style="color: #ff9d00;"></i><strong>{{ comment.author.first_name.upper()+" "+ comment.type.upper() }}S</strong></span>
           <div class="row">
-            <div class="col-10">
+            <div class="col-lg-10">
               <h4 class="card-title mt-2">{{ comment.title }}</h4>
               <p class="card-text">{{ comment.content|safe }}</p>
               <p class="card-text">
@@ -82,7 +82,7 @@
                 <small class="text-muted">· {{ comment.date_posted.strftime('%b %d') }}</small>
               </p>
             </div>
-            <div class="col-2 text-center">
+            <div class="col-lg-2 text-center">
               {% if comment.author == current_user %}
               <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteCommentModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
               {% endif %}

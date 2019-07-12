@@ -94,7 +94,7 @@
         <div class="card-body">
           <span style="color: #ff9d00;"><i class="mr-2" data-feather="corner-up-right" width=20 style="color: #ff9d00;"></i><strong>Response</strong></span>
           <div class="row">
-            <div class="col-10">
+            <div class="col-lg-10">
               <h4 class="card-title">{{ response.title }}</h4>
               <p class="card-text">
                 <img class="rounded-circle mr-1" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" width="25">
@@ -102,7 +102,7 @@
                 <small class="text-muted">· {{ response.date_posted.strftime('%b %d') }}</small>
               </p>
             </div>
-            <div class="col-2">
+            <div class="col-lg-2">
               <a href="{{ url_for('post', company_id=company_id, post_id=response.id) }}" class="btn btn-warning rounded-pill mr-2"><i class="mr-2" data-feather="message-square" width=17></i>View</a>
             </div>
           </div>

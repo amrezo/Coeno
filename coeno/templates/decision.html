@@ -72,7 +72,7 @@
         <div class="card-body">
           <span style="color: #ff9d00;"><i class="mr-2" data-feather="check-circle" width=20 style="color: #ff9d00;"></i><strong>Step #{{ step.number }}</strong></span>
           <div class="row">
-            <div class="col-10">
+            <div class="col-lg-10">
               {% if step.complete|string == 'True' %}
               <del style="color: gray;"><h4 class="card-title text-muted">{{ step.title }}</h4></del>
               <del style="color: gray;"><p class="card-text text-muted">{{ step.content|safe }}</p></del>
@@ -87,7 +87,7 @@
                 <small class="text-muted">· {{ step.date_posted.strftime('%b %d') }}</small>
               </p>
             </div>
-            <div class="col-2 text-center">
+            <div class="col-lg-2 text-center">
               {% if step.author == current_user %}
               <button type="button" class="btn btn-danger rounded-pill mr-2" data-toggle="modal" data-target="#deleteStepModal"><i class="mr-2" data-feather="trash-2" width=17></i>Delete</button>
               {% endif %}
